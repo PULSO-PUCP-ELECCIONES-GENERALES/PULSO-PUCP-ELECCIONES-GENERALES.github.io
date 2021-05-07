@@ -1,0 +1,391 @@
+---
+title: "Elecciones 2001-2016"
+output:
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    logo: Logo.png
+    favicon: pulsofavi.png
+---
+
+<script>
+$('.navbar-logo').wrap('<a href="https://pulso.pucp.edu.pe/" target=_blank>');
+</script>
+Competitividad
+===================================== 
+
+
+```{r setup, include=FALSE, warning=FALSE}
+congre=readxl::read_excel("Congreso.xlsx","Resumen")
+library(cowplot)
+library(sf)
+map1=read_sf("ambasvueltas_01_16.geojson")
+border=read_sf("borderPeru.shp")
+#write.csv(map1%>% st_drop_geometry(),"map1.csv")
+
+
+theLev=c("UNO","DOS","TRES o más" )
+map1$nep2016_cat=factor(map1$nep2016_cat,
+                        levels= theLev,
+                        ordered = T)
+
+map1$nep2011_cat=factor(map1$nep2011_cat,
+                        levels= theLev,
+                        ordered = T)
+
+map1$nep2006_cat=factor(map1$nep2006_cat,
+                        levels= theLev,
+                        ordered = T)
+
+map1$nep2001_cat=factor(map1$nep2001_cat,
+                        levels= theLev,
+                        ordered = T)
+
+
+map1$gana2001ps=1
+map1[map1$gana2001pv=='Peru_Posible' & map1$gana2001sv=='Peru_Posible','gana2001ps']=4
+map1[map1$gana2001pv!='Peru_Posible' & map1$gana2001sv=='Peru_Posible','gana2001ps']=3
+map1[map1$gana2001pv=='Peru_Posible' & map1$gana2001sv!='Peru_Posible','gana2001ps']=2
+
+map1$gana2006ps=1
+map1[map1$gana2006pv=='Partido_Aprista_Peruano' & map1$gana2006sv=='Partido_Aprista_Peruano','gana2006ps']=4
+map1[map1$gana2006pv!='Partido_Aprista_Peruano' & map1$gana2006sv=='Partido_Aprista_Peruano','gana2006ps']=3
+map1[map1$gana2006pv=='Partido_Aprista_Peruano' & map1$gana2006sv!='Partido_Aprista_Peruano','gana2006ps']=2
+
+map1$gana2011ps=1
+map1[map1$gana2011pv=='Gana_Peru' & map1$gana2011sv=='Partido_Nacionalista_Peruano','gana2011ps']=4
+map1[map1$gana2011pv!='Gana_Peru' & map1$gana2011sv=='Partido_Nacionalista_Peruano','gana2011ps']=3
+map1[map1$gana2011pv=='Gana_Peru' & map1$gana2011sv!='Partido_Nacionalista_Peruano','gana2011ps']=2
+
+
+map1$gana2016ps=1
+map1[map1$gana2016pv=='Peruanos_Por_El_Kambio' & map1$gana2016sv=='Peruanos_Por_El_Kambio','gana2016ps']=4
+map1[map1$gana2016pv!='Peruanos_Por_El_Kambio' & map1$gana2016sv=='Peruanos_Por_El_Kambio','gana2016ps']=3
+map1[map1$gana2016pv=='Peruanos_Por_El_Kambio' & map1$gana2016sv!='Peruanos_Por_El_Kambio','gana2016ps']=2
+
+
+theLevels=c(1,2,3,4)
+theLabs=c("En ninguna vuelta",
+          "Sólo en Vuelta I",
+          "Sólo en Vuelta II",
+          "En Vueltas I y II")
+map1$gana2001ps=factor(map1$gana2001ps,
+       levels = theLevels,
+       labels = theLabs, ordered = T)
+
+map1$gana2006ps=factor(map1$gana2006ps,
+       levels = theLevels,
+       labels = theLabs, ordered = T)
+
+map1$gana2011ps=factor(map1$gana2011ps,
+       levels = theLevels,
+       labels = theLabs, ordered = T)
+
+map1$gana2016ps=factor(map1$gana2016ps,
+       levels = theLevels,
+       labels = theLabs, ordered = T)
+
+
+```
+
+
+
+
+```{r maps, echo=FALSE}
+
+library(ggplot2)
+base=ggplot(data=border) + theme_void() + geom_sf(color='black',fill=NA)
+
+#2001
+text=as.data.frame(table(map1$nep2001_cat)) 
+nep2001=base + geom_sf(data=map1,aes(fill=nep2001_cat),
+                       color=NA,
+                       na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la Votación")+ theme(legend.text=element_text(face='bold'))
+
+text2=as.data.frame(table(map1$gana2001ps)) 
+
+win2001=base + geom_sf(data=map1,aes(fill=gana2001ps),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text2$Var1,": ",text2$Freq),palette = "YlGnBu",name="Gana en la Provincia")+ theme(legend.text=element_text(face='bold'))
+
+text3=as.data.frame(table(map1$pol2001)) 
+
+polar2001=base + geom_sf(data=map1,aes(fill=pol2001),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text3$Var1,": ",text3$Freq),palette = "Accent",name="Candidatos")+ theme(legend.text=element_text(face='bold'),legend.position="bottom", legend.box = "vertical",legend.direction = 'vertical')
+
+
+
+#2006
+text=as.data.frame(table(map1$nep2006_cat)) 
+nep2006=base + geom_sf(data=map1,aes(fill=nep2006_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la Votación")+ theme(legend.text=element_text(face='bold'))
+
+text2=as.data.frame(table(map1$gana2006ps)) 
+
+win2006=base + geom_sf(data=map1,aes(fill=gana2006ps),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text2$Var1,": ",text2$Freq),palette = "YlGnBu",name="Gana en la Provincia")+ theme(legend.text=element_text(face='bold'))
+
+text3=as.data.frame(table(map1$pol2006)) 
+
+polar2006=base + geom_sf(data=map1,aes(fill=pol2006),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text3$Var1,": ",text3$Freq),palette = "Accent",name="Candidatos")+ theme(legend.text=element_text(face='bold'),legend.position="bottom", legend.box = "vertical",legend.direction = 'vertical')
+
+
+#2011
+text=as.data.frame(table(map1$nep2011_cat)) 
+nep2011=base + geom_sf(data=map1,aes(fill=nep2011_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la Votación")+ theme(legend.text=element_text(face='bold'))
+
+text2=as.data.frame(table(map1$gana2011ps)) 
+
+win2011=base + geom_sf(data=map1,aes(fill=gana2011ps),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text2$Var1,": ",text2$Freq),palette = "YlGnBu",name="Gana en la Provincia")+ theme(legend.text=element_text(face='bold'))
+
+text3=as.data.frame(table(map1$pol2011)) 
+
+polar2011=base + geom_sf(data=map1,aes(fill=pol2011),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text3$Var1,": ",text3$Freq),palette = "Accent",name="Candidatos")+ theme(legend.text=element_text(face='bold'),legend.position="bottom", legend.box = "vertical",legend.direction = 'vertical')
+
+
+#2016
+text=as.data.frame(table(map1$nep2016_cat)) 
+nep2016=base + geom_sf(data=map1,aes(fill=nep2016_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la Votación")+ theme(legend.text=element_text(face='bold'))
+
+text2=as.data.frame(table(map1$gana2016ps)) 
+
+win2016=base + geom_sf(data=map1,aes(fill=gana2016ps),color=NA) + scale_fill_brewer(labels =paste0(text2$Var1,": ",text2$Freq),palette = "YlGnBu",name="Gana en la Provincia",drop=FALSE) + theme(legend.text=element_text(face='bold'))
+
+text3=as.data.frame(table(map1$pol2016)) 
+
+polar2016=base + geom_sf(data=map1,aes(fill=pol2016),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text3$Var1,": ",text3$Freq),palette = "Accent",name="Candidatos")+ theme(legend.text=element_text(face='bold'),legend.position="bottom", legend.box = "vertical",legend.direction = 'vertical')
+
+
+
+##congres
+
+congre2001=ggplot(data=congre[congre$periodo==2001 & congre$partido!='Total',]) + theme_classic()
+congre2001=congre2001 + geom_bar(aes(x=partido,y=inicio,fill=partido),color='black',stat = "identity") + scale_y_continuous(limits = c(0,100), breaks = c(0,61,80))+ geom_hline(yintercept = 61,lty=2,color='grey60') +
+  geom_hline(yintercept = 80,lty=2,color='grey60') +geom_text(x=1,y=62,label="Votos para\nCensurar\nGabinete",size=3,color='grey60',fontface='bold') +
+  geom_text(x=1,y=81,label="Votos para\nVacancia\nPresidencial",size=3,color='grey60',fontface='bold') + 
+  scale_fill_manual(values = c("black","grey","white")) +
+  geom_text(aes(x=partido,y=inicio,label=inicio),nudge_y = 2.5)  +
+  guides(fill=FALSE) + labs(title = "Composición del Congreso",x="Bancadas",y="Congresistas") +theme(plot.caption = element_text(size = 5))
+
+
+congre2006=ggplot(data=congre[congre$periodo==2006 & congre$partido!='Total',]) + theme_classic()
+congre2006=congre2006 + geom_bar(aes(x=partido,y=inicio,fill=partido),color='black',stat = "identity") + scale_y_continuous(limits = c(0,100), breaks = c(0,61,80))+ geom_hline(yintercept = 61,lty=2,color='grey60') +
+  geom_hline(yintercept = 80,lty=2,color='grey60') +geom_text(x=1,y=62,label="Votos para\nCensurar\nGabinete",size=3,color='grey60',fontface='bold') +
+  geom_text(x=1,y=81,label="Votos para\nVacancia\nPresidencial",size=3,color='grey60',fontface='bold') + 
+  scale_fill_manual(values = c("black","grey","white")) +
+  geom_text(aes(x=partido,y=inicio,label=inicio),nudge_y = 2.5)  +
+  guides(fill=FALSE) + labs(title = "Composición del Congreso",x="Bancadas",y="Congresistas") +theme(plot.caption = element_text(size = 5))
+
+
+congre2011=ggplot(data=congre[congre$periodo==2011 & congre$partido!='Total',]) + theme_classic()
+congre2011=congre2011 + geom_bar(aes(x=partido,y=inicio,fill=partido),color='black',stat = "identity") + scale_y_continuous(limits = c(0,100), breaks = c(0,66,87))+ geom_hline(yintercept = 66,lty=2,color='grey60') +
+  geom_hline(yintercept = 87,lty=2,color='grey60') +geom_text(x=1,y=67,label="Votos para\nCensurar\nGabinete",size=3,color='grey60',fontface='bold') +
+  geom_text(x=1,y=89,label="Votos para\nVacancia\nPresidencial",size=3,color='grey60',fontface='bold') + 
+  scale_fill_manual(values = c("black","grey","white")) +
+  geom_text(aes(x=partido,y=inicio,label=inicio),nudge_y = 2.5)  +
+  guides(fill=FALSE) + labs(title = "Composición del Congreso",x="Bancadas",y="Congresistas") +theme(plot.caption = element_text(size = 5))
+
+congre2016=ggplot(data=congre[congre$periodo==2016 & congre$partido!='Total',]) + theme_classic()
+congre2016=congre2016 + geom_bar(aes(x=partido,y=inicio,fill=partido),color='black',stat = "identity") + scale_y_continuous(limits = c(0,100), breaks = c(0,66,87))+ geom_hline(yintercept = 66,lty=2,color='grey60') +
+  geom_hline(yintercept = 87,lty=2,color='grey60') +geom_text(x=1,y=67,label="Votos para\nCensurar\nGabinete",size=3,color='grey60',fontface='bold') +
+  geom_text(x=1,y=89,label="Votos para\nVacancia\nPresidencial",size=3,color='grey60',fontface='bold') + 
+  scale_fill_manual(values = c("black","grey","white")) +
+  geom_text(aes(x=partido,y=inicio,label=inicio),nudge_y = 2.5)  +
+  guides(fill=FALSE) + labs(title = "Composición del Congreso",x="Bancadas",y="Congresistas") +theme(plot.caption = element_text(size = 5))
+
+
+
+
+```
+
+
+Column {data-width=200}
+-------------------------------------
+    
+### Competitividad en Primera Vuelta
+
+Las primeras vueltas de las elecciones presidenciales en perspectiva histórica tuvieron varios partidos
+•	2001: Ocho (08) partidos
+•	2006: Veinte (20) partidos
+•	2011: Diez (10) partidos
+•	2016: Diez (10) partidos
+En los mapas se muestran cuántos partidos efectivamente compitieron a nivel provincial. En la leyenda, el valor de uno (1) significa que en esa provincia solo una lista partidaria tuvo un apoyo mayoritario. Es decir, no hubo competencia. Al aumentar este valor (a dos o tres) se alude que hubo más competencia. 
+Se puede observar que en la mayoría de provincias, en los últimos 4 procesos electorales, siempre hemos tenido una alta competencia. 
+
+
+- Fuente: Jurado Nacional de Elecciones
+- Elaborado por:
+
+  Dr. José Manuel Magallanes
+  - Director de [PULSO PUCP](https://pulso.pucp.edu.pe/)
+  - Coordinador del [Grupo Interdisciplinario de Prospectiva para Políticas Públicas (GI3P)](https://investigacion.pucp.edu.pe/grupos/GI3P/)
+
+  Mg. Noam Valentín López
+  - Investigador Senior de PULSO PUCP.
+  - Miembro del GI3P - Coordinador del Laboratorio de Seguridad y Corrupción.
+
+   
+Column {data-width=300}
+-------------------------------------
+   
+### Primera vuelta - 2001
+
+```{r}
+nep2001
+```   
+ 
+### Primera vuelta - 2006
+    
+```{r}
+nep2006
+```
+
+Column {data-width=300}
+-------------------------------------
+   
+### Primera vuelta - 2011
+
+```{r}
+nep2011
+```   
+ 
+### Primera vuelta - 2016
+    
+```{r}
+nep2016
+```
+
+Penetración 
+===================================== 
+
+
+
+
+Column {data-width=200}
+-------------------------------------
+    
+### Penetración en la Segunda vuelta
+
+En los últimos 4 procesos electorales presidenciales tuvimos segunda vuelta. El ganador se enfrentó a lo siguiente:
+
+-	No perder votos de la primera vuelta
+-	Obtener votos donde perdió en la primera vuelta
+
+Los mapas muestran que Alejandro Toledo y Ollanta Humala ganan elecciones con votos distribuidos en buena parte del territorio nacional. Alan García consolidó su presencia en la costa, principalmente del norte del país y Pedro Pablo Kuczynski ganó por la votación de las provincias que apoyaron a otros candidatos en la primera vuelta.
+
+
+
+
+- Fuente: Jurado Nacional de Elecciones
+
+- Elaborado por:
+
+  Dr. José Manuel Magallanes
+  - Director de [PULSO PUCP](https://pulso.pucp.edu.pe/)
+  - Coordinador del [GI3P](https://investigacion.pucp.edu.pe/grupos/GI3P/)
+  
+  Mg. Noam Valentín López
+  - Investigador Senior de PULSO PUCP.
+  - Miembro del GI3P - Coordinador del Laboratorio de Seguridad y Corrupción.
+   
+Column {data-width=300}
+-------------------------------------
+   
+### ALEJANDRO TOLEDO en el 2001
+
+```{r}
+win2001
+```   
+ 
+### ALAN GARCIA en el 2006
+    
+```{r}
+win2006
+```
+
+Column {data-width=300}
+-------------------------------------
+   
+### OLLANTA HUMALA en el 2011
+
+```{r}
+win2011
+```   
+ 
+### PEDRO P. KUCZYNSKI en el 2016
+    
+```{r}
+win2016
+```
+
+Polarización
+===================================== 
+
+
+
+
+Column {data-width=200}
+-------------------------------------
+    
+### Polarización en la primera vuelta
+
+En esta sección hemos agrupado candidatos según su discurso político. Se han considerado sólo aquellos que obtuvieron la mayor votación en cada provincia. Nótese que hay candidatos que no ganaron en ninguna provincia (Valentín Paniagua el 2006, Luis Castañeda el 2011, y Alfredo Barnechea el 2016) pero que obtuvieron más votos que algunos que aparecen en estos mapas.
+Esta es una de muchas posibles combinaciones, pero organizamos los candidatos en dos grupos:
+1.	Aquellos que su propuesta no era radical, sino de preservar lo avanzado:
+
+* 2001: Alan García, Lourdes Flores.
+* 2006: Alan García, Martha Chavez, Lourdes Flores, Humberto Lay.
+* 2011: Keiko Fujimori, PPK.
+* 2016: Keiko Fujimori, PPK.
+
+2.	Aquellos que su campaña se centraba más en la crítica al sistema, con mayor énfasis en cambio de modelo: 
+
+* 2001: Alejandro Toledo y Fernando Olivera.
+* 2006: Ollanta Humala.
+* 2011: Ollanta Humala y Alejandro Toledo.
+* 2016: Verónika Mendoza, Gregorio Santos, y Alejandro Toledo.
+
+Estos mapas sólo buscan detectar si estas posiciones hipotéticas se centran en zonas particulares del país. Se puede observar que la distribución congresal emerge de la primera vuelta. Nótese también como el 2016 plantea un escenario muy retador al Presidente electo (PPK). 
+
+
+- Fuente: Jurado Nacional de Elecciones
+
+- Elaborado por:
+
+  Dr. José Manuel Magallanes
+  - Director de [PULSO PUCP](https://pulso.pucp.edu.pe/)
+  - Coordinador del [GI3P](https://investigacion.pucp.edu.pe/grupos/GI3P/)
+  
+  Mg. Noam Valentín López
+  - Investigador Senior de PULSO PUCP.
+  - Miembro del GI3P - Coordinador del Laboratorio de Seguridad y Corrupción.
+  
+  Chiara Zamora
+  - Asistente de Investigación en PULSO PUCP.
+  - Miembro del [GI3P](https://investigacion.pucp.edu.pe/grupos/GI3P/), Analista del del **SocialData Lab**.
+   
+Column {data-width=300}
+-------------------------------------
+   
+### Elección 2001 (1ra Vuelta)
+
+```{r}
+plot_grid(congre2001, polar2001, labels = c(" "," "))
+```   
+ 
+### Elección 2006 (1ra Vuelta)
+    
+```{r}
+plot_grid(congre2006, polar2006, labels = c(" "," "))
+```
+
+Column {data-width=300}
+-------------------------------------
+   
+### Elección 2011 (1ra Vuelta)
+
+```{r}
+
+plot_grid(congre2011, polar2011, labels = c(" "," "))
+```   
+ 
+### Elección 2016 (1ra Vuelta)
+    
+```{r}
+plot_grid(congre2016, polar2016, labels = c(" "," "))
+```
