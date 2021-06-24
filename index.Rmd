@@ -4,14 +4,24 @@ output:
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
-    logo: Logo.png
+    logo: Webp.net-resizeimage (4).png
     favicon: pulsofavi.png
 ---
+
+<style>                     
+.navbar {
+  background-color:#1e325c;
+  border-color:#1e325c;
+}
+.navbar-brand {
+color:white!important;
+}
+</style> 
 
 <script>
 $('.navbar-logo').wrap('<a href="https://pulso.pucp.edu.pe/" target=_blank>');
 </script>
-Competitividad
+**Competitividad**
 ===================================== 
 
 
@@ -250,7 +260,7 @@ nep2011
 nep2016
 ```
 
-Penetración 
+**Penetración** 
 ===================================== 
 
 
@@ -313,7 +323,7 @@ win2011
 win2016
 ```
 
-Polarización
+**Polarización**
 ===================================== 
 
 
