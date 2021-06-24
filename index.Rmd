@@ -375,13 +375,13 @@ Estos mapas sólo buscan detectar si estas posiciones hipotéticas se centran en
 Column {data-width=300}
 -------------------------------------
    
-### Elección 2001 (1ra vuelta)
+### Elección 2001 (primera vuelta)
 
 ```{r}
 plot_grid(congre2001, polar2001, labels = c(" "," "))
 ```   
  
-### Elección 2006 (1ra vuelta)
+### Elección 2006 (primera vuelta)
     
 ```{r}
 plot_grid(congre2006, polar2006, labels = c(" "," "))
@@ -390,14 +390,14 @@ plot_grid(congre2006, polar2006, labels = c(" "," "))
 Column {data-width=300}
 -------------------------------------
    
-### Elección 2011 (1ra vuelta)
+### Elección 2011 (primera vuelta)
 
 ```{r}
 
 plot_grid(congre2011, polar2011, labels = c(" "," "))
 ```   
  
-### Elección 2016 (1ra vuelta)
+### Elección 2016 (primera vuelta)
     
 ```{r}
 plot_grid(congre2016, polar2016, labels = c(" "," "))
