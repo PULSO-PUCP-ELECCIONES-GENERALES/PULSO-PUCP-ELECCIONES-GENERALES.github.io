@@ -21,9 +21,9 @@ color:white!important;
 <script>
 $('.navbar-logo').wrap('<a href="https://pulso.pucp.edu.pe/" target=_blank>');
 </script>
+
 **Competitividad**
 ===================================== 
-
 
 ```{r setup, include=FALSE, warning=FALSE}
 congre=readxl::read_excel("Congreso.xlsx","Resumen")
@@ -210,10 +210,12 @@ Column {data-width=200}
 ### Competitividad en Primera Vuelta
 
 Las primeras vueltas de las elecciones presidenciales en perspectiva histórica tuvieron varios partidos
-•	2001: Ocho (08) partidos
-•	2006: Veinte (20) partidos
-•	2011: Diez (10) partidos
-•	2016: Diez (10) partidos
+
+*	2001: Ocho (08) partidos
+*	2006: Veinte (20) partidos
+*	2011: Diez (10) partidos
+*	2016: Diez (10) partidos
+
 En los mapas se muestran cuántos partidos efectivamente compitieron a nivel provincial. En la leyenda, el valor de uno (1) significa que en esa provincia solo una lista partidaria tuvo un apoyo mayoritario. Es decir, no hubo competencia. Al aumentar este valor (a dos o tres) se alude que hubo más competencia. 
 Se puede observar que en la mayoría de provincias, en los últimos 4 procesos electorales, siempre hemos tenido una alta competencia. 
 
