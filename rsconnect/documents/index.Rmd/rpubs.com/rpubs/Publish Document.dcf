@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/752805/396cee3b476648c59ddd27d9d4a9a778
+bundleId: https://api.rpubs.com/api/v1/document/752805/396cee3b476648c59ddd27d9d4a9a778
+url: http://rpubs.com/jmagallanes/752805
+when: 1624549510.57688
