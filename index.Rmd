@@ -76,9 +76,9 @@ map1[map1$gana2016pv=='Peruanos_Por_El_Kambio' & map1$gana2016sv!='Peruanos_Por_
 
 theLevels=c(1,2,3,4)
 theLabs=c("En ninguna vuelta",
-          "Sólo en Vuelta I",
-          "Sólo en Vuelta II",
-          "En Vueltas I y II")
+          "Sólo en vuelta I",
+          "Sólo en vuelta II",
+          "En vueltas I y II")
 map1$gana2001ps=factor(map1$gana2001ps,
        levels = theLevels,
        labels = theLabs, ordered = T)
@@ -110,7 +110,7 @@ base=ggplot(data=border) + theme_void() + geom_sf(color='black',fill=NA)
 text=as.data.frame(table(map1$nep2001_cat)) 
 nep2001=base + geom_sf(data=map1,aes(fill=nep2001_cat),
                        color=NA,
-                       na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la Votación")+ theme(legend.text=element_text(face='bold'))
+                       na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la votación")+ theme(legend.text=element_text(face='bold'))
 
 text2=as.data.frame(table(map1$gana2001ps)) 
 
@@ -124,7 +124,7 @@ polar2001=base + geom_sf(data=map1,aes(fill=pol2001),color=NA,na.rm = T) + scale
 
 #2006
 text=as.data.frame(table(map1$nep2006_cat)) 
-nep2006=base + geom_sf(data=map1,aes(fill=nep2006_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la Votación")+ theme(legend.text=element_text(face='bold'))
+nep2006=base + geom_sf(data=map1,aes(fill=nep2006_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la votación")+ theme(legend.text=element_text(face='bold'))
 
 text2=as.data.frame(table(map1$gana2006ps)) 
 
@@ -137,7 +137,7 @@ polar2006=base + geom_sf(data=map1,aes(fill=pol2006),color=NA,na.rm = T) + scale
 
 #2011
 text=as.data.frame(table(map1$nep2011_cat)) 
-nep2011=base + geom_sf(data=map1,aes(fill=nep2011_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la Votación")+ theme(legend.text=element_text(face='bold'))
+nep2011=base + geom_sf(data=map1,aes(fill=nep2011_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la votación")+ theme(legend.text=element_text(face='bold'))
 
 text2=as.data.frame(table(map1$gana2011ps)) 
 
@@ -150,7 +150,7 @@ polar2011=base + geom_sf(data=map1,aes(fill=pol2011),color=NA,na.rm = T) + scale
 
 #2016
 text=as.data.frame(table(map1$nep2016_cat)) 
-nep2016=base + geom_sf(data=map1,aes(fill=nep2016_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la Votación")+ theme(legend.text=element_text(face='bold'))
+nep2016=base + geom_sf(data=map1,aes(fill=nep2016_cat),color=NA,na.rm = T) + scale_fill_brewer(labels =paste0(text$Var1,": ",text$Freq),direction = -1,palette = "OrRd",name="Concentración de la votación")+ theme(legend.text=element_text(face='bold'))
 
 text2=as.data.frame(table(map1$gana2016ps)) 
 
@@ -207,7 +207,7 @@ congre2016=congre2016 + geom_bar(aes(x=partido,y=inicio,fill=partido),color='bla
 Column {data-width=200}
 -------------------------------------
     
-### Competitividad en Primera Vuelta
+### **Competitividad en la primera vuelta**
 
 Las primeras vueltas de las elecciones presidenciales en perspectiva histórica tuvieron varios partidos
 
@@ -271,7 +271,7 @@ nep2016
 Column {data-width=200}
 -------------------------------------
     
-### Penetración en la Segunda vuelta
+### **Penetración en la segunda vuelta**
 
 En los últimos 4 procesos electorales presidenciales tuvimos segunda vuelta. El ganador se enfrentó a lo siguiente:
 
@@ -334,9 +334,10 @@ win2016
 Column {data-width=200}
 -------------------------------------
     
-### Polarización en la primera vuelta
+### **Polarización en la primera vuelta**
 
-En esta sección hemos agrupado candidatos según su discurso político. Se han considerado sólo aquellos que obtuvieron la mayor votación en cada provincia. Nótese que hay candidatos que no ganaron en ninguna provincia (Valentín Paniagua el 2006, Luis Castañeda el 2011, y Alfredo Barnechea el 2016) pero que obtuvieron más votos que algunos que aparecen en estos mapas.
+En esta sección hemos agrupado candidatos según su discurso político. Se han considerado sólo aquellosoque obtuvieron la mayor votación en cada provincia. Nótese que hay candidatos que no ganaron en ninguna provincia (Valentín Paniagua el 2006, Luis Castañeda el 2011, y Alfredo Barnechea el 2016) pero que obtuvieron más votos que algunos que aparecen en estos mapas.
+
 Esta es una de muchas posibles combinaciones, pero organizamos los candidatos en dos grupos:
 1.	Aquellos que su propuesta no era radical, sino de preservar lo avanzado:
 
@@ -374,13 +375,13 @@ Estos mapas sólo buscan detectar si estas posiciones hipotéticas se centran en
 Column {data-width=300}
 -------------------------------------
    
-### Elección 2001 (1ra Vuelta)
+### Elección 2001 (1ra vuelta)
 
 ```{r}
 plot_grid(congre2001, polar2001, labels = c(" "," "))
 ```   
  
-### Elección 2006 (1ra Vuelta)
+### Elección 2006 (1ra vuelta)
     
 ```{r}
 plot_grid(congre2006, polar2006, labels = c(" "," "))
@@ -389,14 +390,14 @@ plot_grid(congre2006, polar2006, labels = c(" "," "))
 Column {data-width=300}
 -------------------------------------
    
-### Elección 2011 (1ra Vuelta)
+### Elección 2011 (1ra vuelta)
 
 ```{r}
 
 plot_grid(congre2011, polar2011, labels = c(" "," "))
 ```   
  
-### Elección 2016 (1ra Vuelta)
+### Elección 2016 (1ra vuelta)
     
 ```{r}
 plot_grid(congre2016, polar2016, labels = c(" "," "))
